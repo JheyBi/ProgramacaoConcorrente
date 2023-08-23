@@ -31,11 +31,15 @@ def sequencia(matriz,j,i,cont):
     if cont > 0:
         seq[cont]=seq[cont]+1
 
-def aplica_sequencia(matriz):
-    for j in range(0,len(matriz)):
+def aplica_sequencia(matriz, fim, inicio=0 ):
+    for j in range(inicio,fim):
         sequencia(matriz,j,0,0)
        
 
-
-print(aplica_sequencia(data))
+#[0, 4833, 2891, 1687, 940, 454, 213, 88, 35, 25, 5, 3, 0, 1, 0]
+aplica_sequencia(data,round(len(data)/3))
+print("Final: ",seq)
+aplica_sequencia(data,round(len(data)/3*2),round(len(data)/3))
+print("Final: ",seq)
+aplica_sequencia(data,round(len(data)),round(len(data)/3*2))
 print("Final: ",seq)
