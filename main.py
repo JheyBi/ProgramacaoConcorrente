@@ -1,6 +1,8 @@
+from os import system
 import pandas as pd
 import threading
 import time
+import keyboard
 
 seq = []
 for aux in range(0,15):
@@ -32,6 +34,7 @@ def sequencia(matriz,j,i,cont):
     if cont > 0:
         seq[cont]=seq[cont]+1
 
+
 def aplica_sequencia(matriz, inicio, fim):
     #printa qual thread é
     print(f"Thread: {threading.current_thread().name} - Intervalo = ({inicio+1} - {fim})")
@@ -44,19 +47,7 @@ def imprime_sequencia():
     
     for i in range(1,len(seq)):
         print(f"sequencia de {i+1} - {seq[i]}")
-    
 
-# def aplica_thread(data, num_thread):
-    
-#     intervalo = len(data)/num_thread
-
-#     for num in range(0,num_thread):
-#         t = Thread(target=aplica_sequencia, args=(data,int(intervalo*num),int(intervalo*(num+1))))
-#         t.start()
-
-
-
-       
 #main
 def main():
     data = le_entrada("resultados.csv")
@@ -66,9 +57,11 @@ def main():
     tempo_inicial = time.time()
     aplica_sequencia(data,0,len(data))
     tempo_final = time.time()
-    print(f"Tempo de execução 1 thread: {tempo_final - tempo_inicial}")
+    print(f"\n----------EXECUÇÃO 1 THREAD----------")
     imprime_sequencia()
-
+    print(f"Tempo de execução 1 thread: {tempo_final - tempo_inicial}")
+    keyboard.wait("enter")
+    system("cls")
 
     #thread
     #zera a seq
@@ -81,27 +74,19 @@ def main():
     num_thread = 4
     intervalo = int(len(data)/num_thread)
 
+    #logica dos crias
+    #seta intervalo
+    # 722+1-722*2+1
+    # 722*2+2-722*3+2
+    # 722*3+3 - 722*4+3
+
     tempo_inicial = time.time()
     threading.Thread(target=aplica_sequencia, args=(data,0,intervalo)).start()
     for num in range(1, num_thread):
         threading.Thread(target=aplica_sequencia, args=(data,(intervalo*num)+(num-1),intervalo*(num+1)+num)).start()
     tempo_final = time.time()
-    print(f"Tempo de execução {num_thread} thread: {tempo_final - tempo_inicial}")
+    print(f"\n----------EXECUÇÃO VARIAS THREADS----------")
     imprime_sequencia()    
-
-    # num = 0
-    # print("tamanho da matriz",len(data))
-    # intervalo = len(data)/num_thread
-    # print(f"Intervalo = ({round(intervalo*num)} - {round(intervalo*(num+1))})",intervalo)
-    # t1 = Thread(target=aplica_sequencia, args=(data,round(intervalo*num),round(intervalo*(num+1))))
-    # num=num+1
-    # print(f"Intervalo = ({round(intervalo*num)+1} - {round(intervalo*(num+1))})",intervalo)
-    # t2 = Thread(target=aplica_sequencia, args=(data,round(intervalo*num)+1,round(intervalo*(num+1))))
-    # num=num+1
-    # print(f"Intervalo = ({round(intervalo*num)+1} - {round(intervalo*(num+1))})",intervalo)
-    # t3 = Thread(target=aplica_sequencia, args=(data,round(intervalo*num)+1,round(intervalo*(num+1))))
-    # num=num+1
-    # print(f"Intervalo = ({round(intervalo*num)+1} - {round(intervalo*(num+1))})",intervalo)
-    # t4 = Thread(target=aplica_sequencia, args=(data,round(intervalo*num)+1,round(intervalo*(num+1))))
+    print(f"\nTempo de execução {num_thread} thread: {tempo_final - tempo_inicial}")
 
 main()
